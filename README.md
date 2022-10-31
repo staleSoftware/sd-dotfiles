@@ -10,7 +10,7 @@ $ dotfiles commit -m "new vimrc"
 ```
 If you want to setup your environment on a new computer, you can do the following:
 ```
-$ git clone --bare https://github.com/USERNAME/dotfiles.git $HOME/.dotfiles
+$ git clone --bare https://github.com/staleSoftware/sd-dotfiles.git $HOME/.dotfiles
 $ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 $ dotfiles checkout
 ```
