@@ -1,0 +1,15 @@
+#
+# ~/.bash_alias
+#
+
+#dotfiles
+alias dot='GIT_DIR=~/.dotfiles GIT_WORK_TREE=~'
+
+#git
+alias gitfp='git fetch --all --prune && git fetch --tags --force'
+alias gits='git status'
+alias gitd='git diff'
+alias gitdc='git diff --cached'
+alias gitb='git branch -vv'
+alias gitcm='git checkout -b master origin/master || git checkout -b main origin/main'
+alias gitlg='git log --all --oneline --graph'
