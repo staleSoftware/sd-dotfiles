@@ -13,5 +13,5 @@ If you want to setup your environment on a new computer, you can do the followin
 git clone --bare https://github.com/staleSoftware/sd-dotfiles.git $HOME/.dotfiles
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 dotfiles checkout
-doffiles pull --recurse-submodules
+dotfiles pull --recurse-submodules
 ```

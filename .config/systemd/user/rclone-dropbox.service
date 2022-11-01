@@ -1,0 +1,21 @@
+[Unit]
+Description=Dropbox (rclone)
+AssertPathIsDirectory=%h/dropbox
+# Make sure we have network enabled
+After=network.target
+
+[Service]
+Type=simple
+
+ExecStart=/usr/bin/rclone mount --vfs-cache-mode full mydropbox: dropbox
+
+# Perform lazy unmount
+ExecStop=/usr/bin/fusermount -zu %h/dropbox
+
+# Restart the service whenever rclone exists with non-zero exit code
+Restart=on-failure
+RestartSec=15
+
+[Install]
+# Autostart after reboot
+WantedBy=default.target
