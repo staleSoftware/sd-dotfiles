@@ -8,6 +8,10 @@
 [[ -z "$FUNCNEST" ]] && export FUNCNEST=100          # limits recursive functions, see 'man bash'
 
 
+export PATH=~/.local/bin:$PATH
+export PATH=~/go/bin:$PATH
+export PATH=$PATH:/usr/local/go/bin
+
 source ~/.bash_function
 source ~/.bash_alias
 source ~/.bash_color
