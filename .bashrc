@@ -11,6 +11,8 @@
 export PATH=~/.local/bin:$PATH
 export PATH=~/go/bin:$PATH
 export PATH=$PATH:/usr/local/go/bin
+export EDITOR=nvim
+
 
 source ~/.bash_function
 source ~/.bash_alias
