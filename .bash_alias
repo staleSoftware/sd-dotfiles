@@ -10,6 +10,11 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
+
+#ls
+alias ls='ls --color=auto'
+alias ll='ls -lah --color=auto'
+
 #git
 alias gitfp='git fetch --all --prune && git fetch --tags --force'
 alias gits='git status'
