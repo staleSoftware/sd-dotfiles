@@ -65,8 +65,6 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Workspace Diagnostics" },
 -- }
 
--- TODO: User Config for predefined plugins
--- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
@@ -74,6 +72,12 @@ lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
 -- if you don't want all the parsers change this to a table of the ones you want
+
+
+
+------------------------
+-- Treesitter
+------------------------
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
   "c",
@@ -87,113 +91,111 @@ lvim.builtin.treesitter.ensure_installed = {
   "rust",
   "java",
   "yaml",
+  "go",
+  "gomod",
 }
-
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enable = true
 
--- generic LSP settings
+------------------------
+-- Plugins
+------------------------
+lvim.plugins = {
+   "towolf/vim-helm",
+  "jpalardy/vim-slime",
+  "olexsmir/gopher.nvim",
+  "leoluz/nvim-dap-go",
+}
 
--- -- make sure server will always be installed even if the server is in skipped_servers list
--- lvim.lsp.installer.setup.ensure_installed = {
---     "sumneko_lua",
---     "jsonls",
--- }
--- -- change UI setting of `LspInstallInfo`
--- -- see <https://github.com/williamboman/nvim-lsp-installer#default-configuration>
--- lvim.lsp.installer.setup.ui.check_outdated_servers_on_open = false
--- lvim.lsp.installer.setup.ui.border = "rounded"
--- lvim.lsp.installer.setup.ui.keymaps = {
---     uninstall_server = "d",
---     toggle_server_expand = "o",
--- }
+------------------------
+-- Formatting
+------------------------
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+  { command = "goimports", filetypes = { "go" } },
+  { command = "gofumpt", filetypes = { "go" } },
+}
 
--- ---@usage disable automatic installation of servers
--- lvim.lsp.installer.setup.automatic_installation = false
+lvim.format_on_save = {
+  pattern = { "*.go" },
+}
 
--- ---configure a server manually. !!Requires `:LvimCacheReset` to take effect!!
--- ---see the full default list `:lua print(vim.inspect(lvim.lsp.automatic_configuration.skipped_servers))`
--- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
--- local opts = {} -- check the lspconfig documentation for a list of all possible options
--- require("lvim.lsp.manager").setup("pyright", opts)
+------------------------
+-- Dap
+------------------------
+local dap_ok, dapgo = pcall(require, "dap-go")
+if not dap_ok then
+  return
+end
 
--- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
--- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
--- lvim.lsp.automatic_configuration.skipped_servers = vim.tbl_filter(function(server)
---   return server ~= "emmet_ls"
--- end, lvim.lsp.automatic_configuration.skipped_servers)
+dapgo.setup()
 
--- -- you can set a custom on_attach function that will be used for all the language servers
--- -- See <https://github.com/neovim/nvim-lspconfig#keybindings-and-completion>
--- lvim.lsp.on_attach_callback = function(client, bufnr)
---   local function buf_set_option(...)
---     vim.api.nvim_buf_set_option(bufnr, ...)
---   end
---   --Enable completion triggered by <c-x><c-o>
---   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
--- end
+------------------------
+-- LSP
+------------------------
 lvim.lsp.on_attach_callback = function(client, bufnr)
   if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "helm" then
     vim.diagnostic.disable()
   end
 end
 
--- -- set a formatter, this will override the language server formatting capabilities (if it exists)
--- local formatters = require "lvim.lsp.null-ls.formatters"
--- formatters.setup {
---   { command = "black", filetypes = { "python" } },
---   { command = "isort", filetypes = { "python" } },
---   {
---     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
---     command = "prettier",
---     ---@usage arguments to pass to the formatter
---     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
---     extra_args = { "--print-with", "100" },
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
---     filetypes = { "typescript", "typescriptreact" },
---   },
--- }
 
--- -- set additional linters
--- local linters = require "lvim.lsp.null-ls.linters"
--- linters.setup {
---   { command = "flake8", filetypes = { "python" } },
---   {
---     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
---     command = "shellcheck",
---     ---@usage arguments to pass to the formatter
---     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
---     extra_args = { "--severity", "warning" },
---   },
---   {
---     command = "codespell",
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
---     filetypes = { "javascript", "python" },
---   },
--- }
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "gopls" })
 
--- Additional Plugins
--- lvim.plugins = {
---     {
---       "folke/trouble.nvim",
---       cmd = "TroubleToggle",
---     },
--- }
-lvim.plugins = {
-  { "towolf/vim-helm" },
-  { "jpalardy/vim-slime" }
+local lsp_manager = require "lvim.lsp.manager"
+lsp_manager.setup("golangci_lint_ls", {
+  on_init = require("lvim.lsp").common_on_init,
+  capabilities = require("lvim.lsp").common_capabilities(),
+})
+
+lsp_manager.setup("gopls", {
+  on_attach = function(client, bufnr)
+    require("lvim.lsp").common_on_attach(client, bufnr)
+    local _, _ = pcall(vim.lsp.codelens.refresh)
+    local map = function(mode, lhs, rhs, desc)
+      if desc then
+        desc = desc
+      end
+
+      vim.keymap.set(mode, lhs, rhs, { silent = true, desc = desc, buffer = bufnr, noremap = true })
+    end
+    map("n", "<leader>Ci", "<cmd>GoInstallDeps<Cr>", "Install Go Dependencies")
+    map("n", "<leader>Ct", "<cmd>GoMod tidy<cr>", "Tidy")
+    map("n", "<leader>Ca", "<cmd>GoTestAdd<Cr>", "Add Test")
+    map("n", "<leader>CA", "<cmd>GoTestsAll<Cr>", "Add All Tests")
+    map("n", "<leader>Ce", "<cmd>GoTestsExp<Cr>", "Add Exported Tests")
+    map("n", "<leader>Cg", "<cmd>GoGenerate<Cr>", "Go Generate")
+    map("n", "<leader>Cf", "<cmd>GoGenerate %<Cr>", "Go Generate File")
+    map("n", "<leader>Cc", "<cmd>GoCmt<Cr>", "Generate Comment")
+    map("n", "<leader>DT", "<cmd>lua require('dap-go').debug_test()<cr>", "Debug Test")
+  end,
+  on_init = require("lvim.lsp").common_on_init,
+  capabilities = require("lvim.lsp").common_capabilities(),
+  settings = {
+    gopls = {
+      usePlaceholders = true,
+      gofumpt = true,
+      codelenses = {
+        generate = false,
+        gc_details = true,
+        test = true,
+        tidy = true,
+      },
+    },
+  },
+})
+
+local status_ok, gopher = pcall(require, "gopher")
+if not status_ok then
+  return
+end
+
+gopher.setup {
+  commands = {
+    go = "go",
+    gomodifytags = "gomodifytags",
+    gotests = "gotests",
+    impl = "impl",
+    iferr = "iferr",
+  },
 }
-
--- Autocommands (https://neovim.io/doc/user/autocmd.html)
--- vim.api.nvim_create_autocmd("BufEnter", {
---   pattern = { "*.json", "*.jsonc" },
---   -- enable wrap mode for json files only
---   command = "setlocal wrap",
--- })
--- vim.api.nvim_create_autocmd("FileType", {
---   pattern = "zsh",
---   callback = function()
---     -- let treesitter use bash highlight for zsh files as well
---     require("nvim-treesitter.highlight").attach(0, "bash")
---   end,
--- })
