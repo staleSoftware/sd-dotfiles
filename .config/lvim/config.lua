@@ -1,7 +1,8 @@
 vim.cmd([[
 let g:slime_target = "tmux"
-let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.2"}
+let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": "2"}
 ]])
+--
 --[[
 lvim is the global options object
 
@@ -15,7 +16,7 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = false
-lvim.colorscheme = "onedarker"
+lvim.colorscheme = "habamax"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -124,11 +125,6 @@ lvim.builtin.treesitter.highlight.enable = true
 
 -- -- you can set a custom on_attach function that will be used for all the language servers
 -- -- See <https://github.com/neovim/nvim-lspconfig#keybindings-and-completion>
-lvim.lsp.on_attach_callback = function(client, bufnr)
-  if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "helm" then
-    vim.diagnostic.disable()
-  end
-end
 -- lvim.lsp.on_attach_callback = function(client, bufnr)
 --   local function buf_set_option(...)
 --     vim.api.nvim_buf_set_option(bufnr, ...)
@@ -136,6 +132,11 @@ end
 --   --Enable completion triggered by <c-x><c-o>
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
+lvim.lsp.on_attach_callback = function(client, bufnr)
+  if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "helm" then
+    vim.diagnostic.disable()
+  end
+end
 
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
 -- local formatters = require "lvim.lsp.null-ls.formatters"
@@ -172,16 +173,16 @@ end
 -- }
 
 -- Additional Plugins
-lvim.plugins = {
-  { "towolf/vim-helm" },
-  { "jpalardy/vim-slime" }
-}
 -- lvim.plugins = {
 --     {
 --       "folke/trouble.nvim",
 --       cmd = "TroubleToggle",
 --     },
 -- }
+lvim.plugins = {
+  { "towolf/vim-helm" },
+  { "jpalardy/vim-slime" }
+}
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
