@@ -7,6 +7,7 @@
 [[ "$(whoami)" = "root" ]] && return
 [[ -z "$FUNCNEST" ]] && export FUNCNEST=100          # limits recursive functions, see 'man bash'
 
+set -o vi
 
 export PATH=~/.local/bin:$PATH
 export PATH=~/go/bin:$PATH
