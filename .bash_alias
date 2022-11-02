@@ -5,6 +5,11 @@
 #dotfiles
 alias dot='GIT_DIR=~/.dotfiles GIT_WORK_TREE=~'
 
+#dir
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 #git
 alias gitfp='git fetch --all --prune && git fetch --tags --force'
 alias gits='git status'
