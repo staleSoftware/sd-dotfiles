@@ -16,7 +16,8 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = false
-lvim.colorscheme = "habamax"
+lvim.colorscheme = "torte"
+vim.opt.relativenumber = true
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -101,7 +102,7 @@ lvim.builtin.treesitter.highlight.enable = true
 -- Plugins
 ------------------------
 lvim.plugins = {
-   "towolf/vim-helm",
+  "towolf/vim-helm",
   "jpalardy/vim-slime",
   "olexsmir/gopher.nvim",
   "leoluz/nvim-dap-go",
