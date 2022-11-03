@@ -4,7 +4,8 @@
 
 #dotfiles
 alias dot='GIT_DIR=~/.dotfiles GIT_WORK_TREE=~'
-alias dotlazygit='lazygit -g ~/.dotfiles -w ~'
+alias dotgit='GIT_DIR=~/.dotfiles GIT_WORK_TREE=~ /usr/bin/git'
+alias dotlazygit='/usr/bin/lazygit -g ~/.dotfiles -w ~'
 
 #dir
 alias ..='cd ..'
