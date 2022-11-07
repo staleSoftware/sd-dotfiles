@@ -25,3 +25,11 @@ alias gitdc='git diff --cached'
 alias gitb='git branch -vv'
 alias gitcm='git checkout -b master origin/master || git checkout -b main origin/main'
 alias gitlg='git log --all --oneline --graph'
+
+#work vpn
+alias vpnprodcert='vaultdp vpn generateconfig prodvpn -o ~/vpn/openvpnclient-prod.ovpn'
+alias vpnprod='sudo openvpn --config ~/vpn/openvpnclient-prod.ovpn'
+alias vpndevcert='vaultdp vpn generateconfig devvpn -o ~/vpn/openvpnclient-dev.ovpn'
+alias vpndev='sudo openvpn --config ~/vpn/openvpnclient-dev.ovpn'
+alias vpn2w='sudo openvpn --config ~/vpn/2ndwatchSS.ovpn'
+alias sshtunss='ssh -J debian@c1.stalesoftware.com:10022 debian@192.168.11.50 -D 9870'
