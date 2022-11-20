@@ -9,11 +9,24 @@
 
 set -o vi
 
+# emacs shell mode
+if [ "dumb" == "$TERM" ] ; then
+    alias m='cat'
+    alias less='cat'
+    alias more='cat'
+    export PAGER=cat
+    export TERM=xterm-color
+else
+    alias l='less'
+    alias m='more'
+fi
+
+export EDITOR=emacsclient
+export GIT_EDITOR=$EDITIOR
+
 export PATH=~/.local/bin:$PATH
 export PATH=~/go/bin:$PATH
 export PATH=$PATH:/usr/local/go/bin
-export EDITOR=nvim
-
 
 source ~/.bash_function
 source ~/.bash_alias

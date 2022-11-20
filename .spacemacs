@@ -577,6 +577,9 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (spacemacs/set-leader-keys "opa" 'projectile-add-known-project)
   (spacemacs/set-leader-keys "opi" 'projectile-project-info)
+
+  (spacemacs/set-leader-keys "ola" 'lsp-workspace-folders-add)
+  (spacemacs/set-leader-keys "olr" 'lsp-workspace-folders-remove)
 )
 
 
