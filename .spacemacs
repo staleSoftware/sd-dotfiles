@@ -32,13 +32,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
-     ;; `M-m f e R' (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
-     ;; auto-completion
-     ;; better-defaults
+   '(
+     html
      yaml
      javascript
      protobuf
@@ -50,6 +45,13 @@ This function should only modify configuration layer settings."
      multiple-cursors
      treemacs
      git
+     ;; ----------------------------------------------------------------
+     ;; Example of useful layers you may want to use right away.
+     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
+     ;; `M-m f e R' (Emacs style) to install them.
+     ;; ----------------------------------------------------------------
+     ;; auto-completion
+     ;; better-defaults
      ;; lsp
      ;; markdown
      ;; org
@@ -584,6 +586,26 @@ before packages are loaded."
 
   (spacemacs/set-leader-keys "ow" (defun disable-writeroom() "disable writeroom" (interactive) (global-writeroom-mode -1)))
 
+  ;; Setup for eshell
+  ;; (setq eshell-prompt-function
+  ;;       (lambda ()
+  ;;         (concat (format-time-string "%Y-%m-%d %H:%M" (current-time))
+  ;;                 (if (= (user-uid) 0) " # " " $ "))))
+  (setq eshell-prompt-function
+        (lambda ()
+          (concat
+           (propertize "┌─[" 'face `(:foreground "green"))
+           (propertize (user-login-name) 'face `(:foreground "pink"))
+           (propertize "@" 'face `(:foreground "green"))
+           (propertize (system-name) 'face `(:foreground "orange"))
+           (propertize "]──[" 'face `(:foreground "green"))
+           (propertize (format-time-string "%H:%M" (current-time)) 'face `(:foreground "yellow"))
+           (propertize "]──[" 'face `(:foreground "green"))
+           (propertize (concat (eshell/pwd)) 'face `(:foreground "white"))
+           (propertize "]\n" 'face `(:foreground "green"))
+           (propertize "└─>" 'face `(:foreground "green"))
+           (propertize (if (= (user-uid) 0) " # " " $ ") 'face `(:foreground "green"))
+           )))
 )
 
 
@@ -601,8 +623,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(dired-listing-switches "-alFh")
  '(helm-buffer-max-length 50)
+ '(markdown-command "markdown_py")
  '(package-selected-packages
-   '(git-link git-messenger git-modes gitignore-templates helm-git-grep helm-ls-git magit-section smeargle transient json-mode json-navigator hierarchy json-reformat json-snatcher add-node-modules-path counsel-gtags counsel swiper ivy ggtags helm-gtags impatient-mode htmlize import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode prettier-js skewer-mode js2-mode simple-httpd tern web-beautify groovy-imports pcache groovy-mode lsp-java maven-test-mode mvn protobuf-mode plantuml-mode ac-ispell auto-complete auto-yasnippet company-go dap-mode lsp-docker bui yaml flycheck-pos-tip pos-tip fuzzy go-eldoc go-fill-struct go-gen-test go-guru go-impl go-rename go-tag godoctor helm-c-yasnippet helm-company company helm-lsp lsp-origami origami lsp-treemacs lsp-ui lsp-mode markdown-mode yasnippet-snippets yasnippet ws-butler writeroom-mode winum which-key volatile-highlights vim-powerline vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline-all-the-icons space-doc restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-descbinds helm-ag google-translate golden-ratio go-mode font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
+   '(company-web web-completion-data counsel-css emmet-mode helm-css-scss pug-mode sass-mode haml-mode scss-mode slim-mode tagedit web-mode git-link git-messenger git-modes gitignore-templates helm-git-grep helm-ls-git magit-section smeargle transient json-mode json-navigator hierarchy json-reformat json-snatcher add-node-modules-path counsel-gtags counsel swiper ivy ggtags helm-gtags impatient-mode htmlize import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode prettier-js skewer-mode js2-mode simple-httpd tern web-beautify groovy-imports pcache groovy-mode lsp-java maven-test-mode mvn protobuf-mode plantuml-mode ac-ispell auto-complete auto-yasnippet company-go dap-mode lsp-docker bui yaml flycheck-pos-tip pos-tip fuzzy go-eldoc go-fill-struct go-gen-test go-guru go-impl go-rename go-tag godoctor helm-c-yasnippet helm-company company helm-lsp lsp-origami origami lsp-treemacs lsp-ui lsp-mode markdown-mode yasnippet-snippets yasnippet ws-butler writeroom-mode winum which-key volatile-highlights vim-powerline vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline-all-the-icons space-doc restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-descbinds helm-ag google-translate golden-ratio go-mode font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
  '(plantuml-jar-path "/home/bchase/plantuml.jar")
  '(writeroom-width 130))
 (custom-set-faces
