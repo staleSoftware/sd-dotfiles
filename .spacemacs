@@ -35,9 +35,9 @@ This function should only modify configuration layer settings."
    '(
      html
      yaml
-     javascript
+;;     javascript
      protobuf
-     java
+;;     java
      go
      dap
      emacs-lisp
